@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Generator</title>
+    <script src="https://upload.wikimedia.org/wikipedia/th/thumb/d/d9/Mahasarakham_Business_School_Logo.svg/1200px-Mahasarakham_Business_School_Logo.svg.png"></script>
+    <style>
+        body {
+            font-family: 'TH SarabunPSK', sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin: 0;
+        }
+        .certificate-container {
+            width: 297mm;
+            height: 210mm;
+            margin: auto;
+            border: 10px solid #d4af37;
+            padding: 20px;
+            background-color: #fff9e6;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .certificate-title {
+            font-size: 48px; /* ขนาดฟอนต์ของหัวข้อ */
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #964b00;
+        }
+        .logo {
+            width: 150px;
+            margin: 20px auto;
+        }
+        .certificate-subtitle {
+            font-size: 26px; /* ขนาดฟอนต์ของ subtitle */
+            color: #444;
+            margin-bottom: 20px;
+        }
+        .certificate-body {
+            font-size: 25px; /* ขนาดฟอนต์ในเนื้อหาหลัก */
+            margin: 30px 0;
+        }
+        .name {
+            font-size: 30px; /* ขนาดฟอนต์ชื่อผู้รับเกียรติบัตร */
+            font-weight: bold;
+            color: #333;
+        }
+        .date {
+            font-size: 20px; /* ขนาดฟอนต์ของวันที่ */
+            margin-top: 20px;
+            color: #555;
+        }
+        .signature {
+            font-size: 25px; /* ขนาดฟอนต์ของลายเซ็น */
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #d4af37;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        #downloadButton {
+            display: none;
+        }
+    </style>
+    
+    
+</head>
+<body>
+
+    <h1>สร้างเกียรติบัตร</h1>
+    <form id="certificateForm">
+        <label for="name">ชื่อผู้รับเกียรติบัตร:</label>
+        <input type="text" id="name" name="name" placeholder="กรอกชื่อ" required>
+        <button type="submit">สร้างเกียรติบัตร</button>
+    </form>
+
+    <div id="certificate" class="certificate-container" style="display: none;">
+        
+        <img src="https://upload.wikimedia.org/wikipedia/th/thumb/d/d9/Mahasarakham_Business_School_Logo.svg/1200px-Mahasarakham_Business_School_Logo.svg.png" alt="Mahasarakham Business School Logo" class="logo">
+        <div class="certificate-title">สาขาคอมพิวเตอร์ธุรกิจ</div>
+        <div class="certificate-subtitle">คณะการบัญชีและการจัดการ มหาวิทยาลัยมหาสารคาม</div>
+        <div class="certificate-body">
+            ขอมอบเกียรติบัตรฉบับนี้เพื่อแสดงว่า<br>
+            <span class="name" id="certificateName"></span><br>
+            ได้ผ่านการทดสอบความรู้ด้านวิชาบัญชีขั้นต้น ร้อยละ 80%<br>
+            คณะการบัญชีและการจัดการ มหาวิทยาลัยมหาสารคาม
+        </div>
+        <div class="date" id="currentDate"></div>
+        <div class="signature">
+            <p>นริศรา</p>
+            <p>คณบดี คณะการบัญชีและการจัดการ</p>
+        </div>
+    </div>
+
+    <button id="downloadButton">ดาวน์โหลดเกียรติบัตร</button>
+
+    <script>
+        const form = document.getElementById("certificateForm");
+        const certificate = document.getElementById("certificate");
+        const certificateName = document.getElementById("certificateName");
+        const currentDate = document.getElementById("currentDate");
+        const downloadButton = document.getElementById("downloadButton");
+
+        function getCurrentDate() {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return today.toLocaleDateString('th-TH', options);
+        }
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            certificateName.textContent = name;
+            currentDate.textContent = "วันที่ " + getCurrentDate();
+            certificate.style.display = "block";
+            downloadButton.style.display = "inline-block";
+        });
+
+        downloadButton.addEventListener("click", function () {
+            html2canvas(certificate).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "certificate.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html>
